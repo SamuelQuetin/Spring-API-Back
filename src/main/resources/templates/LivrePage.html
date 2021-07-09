@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Livre</title>
+</head>
+<body>
+    <h1>Livre</h1>
+
+    <form action="#" th:action="@{/postLivre}" th:object="${livre}" method="post">
+        <p>Author</p>
+        <input type="text" th:field="*{author}">
+        <p>Title</p>
+        <input type="text" th:field="*{title}">
+        <p>Description</p>
+        <input type="text" th:field="*{description}">
+        <input type="submit" value="Send">
+    </form>
+
+    <div th:each="livre:${livres}">
+        <p th:text="${livre.author}"></p>
+        <p th:text="${livre.title}"></p>
+        <p th:text="${livre.description}"></p>
+    </div>
+
+</body>
+</html>
