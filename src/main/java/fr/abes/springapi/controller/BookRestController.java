@@ -17,18 +17,37 @@ public class BookRestController {
     private BookDAO bookDAO;
 
     @GetMapping("/api/getBooks")
-    public List<Book> bookList(){
+    public List<Book> getBookList(){
         return bookDAO.findAll();
     }
 
     @GetMapping("/api/getBook/{id}")
-    public Book book(@PathVariable Long id){
+    public Book getBookById(@PathVariable Long id){
         return bookDAO.findById(id)
                 .orElseThrow(() -> new BookNotFoundException(id));
     }
 
     @PostMapping("/api/postBook")
-    public void saveBook(@RequestBody Book book){
-        bookDAO.save(book);
+    public Book saveBook(@RequestBody Book book){
+        return bookDAO.save(book);
+    }
+
+    @PutMapping("/api/updateBook/{id}")
+    public Book updateBook(@RequestBody Book newBook, @PathVariable Long id){
+        return bookDAO.findById(id)
+                .map(book -> {
+                    book.setAuthor(newBook.getAuthor());
+                    book.setTitle(newBook.getTitle());
+                    book.setDescription(newBook.getDescription());
+                    return bookDAO.save(book);
+                }).orElseGet(() -> {
+                    newBook.setId(id);
+                    return bookDAO.save(newBook);
+                });
+    }
+
+    @DeleteMapping("/api/deleteBook/{id}")
+    public void deleteBook(@PathVariable Long id){
+        bookDAO.deleteById(id);
     }
 }
