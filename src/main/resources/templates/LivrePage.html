@@ -2,12 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Livre</title>
+    <title>BookAPI</title>
 </head>
 <body>
-    <h1>Livre</h1>
+    <h1>Book</h1>
 
-    <form action="#" th:action="@{/postLivre}" th:object="${livre}" method="post">
+    <form action="#" th:action="@{/postBook}" th:object="${book}" method="post">
         <p>Author</p>
         <input type="text" th:field="*{author}">
         <p>Title</p>
@@ -17,10 +17,10 @@
         <input type="submit" value="Send">
     </form>
 
-    <div th:each="livre:${livres}">
-        <p th:text="${livre.author}"></p>
-        <p th:text="${livre.title}"></p>
-        <p th:text="${livre.description}"></p>
+    <div th:each="book:${books}">
+        <p th:text="${book.author}"></p>
+        <p th:text="${book.title}"></p>
+        <p th:text="${book.description}"></p>
     </div>
 
 </body>
