@@ -22,7 +22,7 @@ public class BookRestController {
     }
 
     @GetMapping("/api/getBook/{id}")
-    public Book book(Long id){
+    public Book book(@PathVariable Long id){
         return bookDAO.findById(id)
                 .orElseThrow(() -> new BookNotFoundException(id));
     }
