@@ -3,7 +3,6 @@ package fr.abes.springapi.controller;
 import fr.abes.springapi.data.BookDAO;
 import fr.abes.springapi.exception.BookNotFoundException;
 import fr.abes.springapi.model.Book;
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
