@@ -28,6 +28,10 @@ public class DtoMapperUtility {
     }
 
     public <S, T> T map(S source, Class<T> targetClass) {
-        return modelMapper.map(source, targetClass);
+        Object tmpSource = source;
+        if(source == null){
+            tmpSource = new Object();
+        }
+        return modelMapper.map(tmpSource, targetClass);
     }
 }
