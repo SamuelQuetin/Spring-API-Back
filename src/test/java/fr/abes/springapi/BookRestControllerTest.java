@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -88,95 +89,94 @@ class BookRestControllerTest {
                 .andExpect(status().isMethodNotAllowed());
     }
 
-    //TODO : checker le resultat
+    @Test
+    public void wrongHomeGetMethod() throws Exception {
+        mvc.perform(get("/test"))
+                .andExpect(status().isNotFound());
+    }
+
     @Test
     public void getBooksGetMethod() throws Exception {
         when(bookService.getBookList()).thenReturn(bookList);
         mvc.perform(get("/api/getBooks"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].author").value(bookList.get(0).getAuthor()))
+                .andExpect(jsonPath("$[0].title").value(bookList.get(0).getTitle()))
+                .andExpect(jsonPath("$[0].description").value(bookList.get(0).getDescription()))
+                .andExpect(jsonPath("$[1].author").value(bookList.get(1).getAuthor()))
+                .andExpect(jsonPath("$[1].title").value(bookList.get(1).getTitle()))
+                .andExpect(jsonPath("$[1].description").value(bookList.get(1).getDescription()))
+                .andExpect(jsonPath("$[2].author").value(bookList.get(2).getAuthor()))
+                .andExpect(jsonPath("$[2].title").value(bookList.get(2).getTitle()))
+                .andExpect(jsonPath("$[2].description").value(bookList.get(2).getDescription()));
     }
 
-    //TODO : checker le resultat
     @Test
     public void getBooksPutMethod() throws Exception {
-        when(bookService.getBookList()).thenReturn(bookList);
         mvc.perform(put("/api/getBooks"))
                 .andExpect(status().isMethodNotAllowed());
     }
 
-    //TODO : checker le resultat
     @Test
     public void getBooksPostMethod() throws Exception {
-        when(bookService.getBookList()).thenReturn(bookList);
         mvc.perform(post("/api/getBooks"))
                 .andExpect(status().isMethodNotAllowed());
     }
 
-    //TODO : checker le resultat
     @Test
     public void getBooksDeleteMethod() throws Exception {
-        when(bookService.getBookList()).thenReturn(bookList);
         mvc.perform(delete("/api/getBooks"))
                 .andExpect(status().isMethodNotAllowed());
     }
 
-    //TODO : checker le resultat
     @Test
     public void getBookGetMethod() throws Exception {
-        when(bookService.getBookById(1L)).thenReturn(bookList.get(0));
-        mvc.perform(get("/api/getBook/1"))
-                .andExpect(status().isOk());
+        when(bookService.getBookById(0L)).thenReturn(bookList.get(0));
+        mvc.perform(get("/api/getBook/0"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.author").value(bookList.get(0).getAuthor()))
+                .andExpect(jsonPath("$.title").value(bookList.get(0).getTitle()))
+                .andExpect(jsonPath("$.description").value(bookList.get(0).getDescription()));
     }
 
-    //TODO : checker le resultat
     @Test
     public void getBookPutMethod() throws Exception {
-        when(bookService.getBookById(1L)).thenReturn(bookList.get(0));
-        mvc.perform(put("/api/getBook/1"))
+        mvc.perform(put("/api/getBook/0"))
                 .andExpect(status().isMethodNotAllowed());
     }
 
-    //TODO : checker le resultat
     @Test
     public void getBookPostMethod() throws Exception {
-        when(bookService.getBookById(1L)).thenReturn(bookList.get(0));
-        mvc.perform(post("/api/getBook/1"))
+        mvc.perform(post("/api/getBook/0"))
                 .andExpect(status().isMethodNotAllowed());
     }
 
-    //TODO : checker le resultat
     @Test
     public void getBookDeleteMethod() throws Exception {
-        when(bookService.getBookById(1L)).thenReturn(bookList.get(0));
-        mvc.perform(delete("/api/getBook/1"))
+        mvc.perform(delete("/api/getBook/0"))
                 .andExpect(status().isMethodNotAllowed());
     }
 
-    //TODO : checker le resultat
     @Test
     public void postBookGetMethod() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         String jsonContent = mapper.writeValueAsString(bookToPost);
-        when(bookService.saveBook(bookToPost)).thenReturn(bookToPost);
         mvc.perform(get("/api/postBook")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonContent))
                 .andExpect(status().isMethodNotAllowed());
     }
 
-    //TODO : checker le resultat
     @Test
     public void postBookPutMethod() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         String jsonContent = mapper.writeValueAsString(bookToPost);
-        when(bookService.saveBook(bookToPost)).thenReturn(bookToPost);
         mvc.perform(put("/api/postBook")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonContent))
                 .andExpect(status().isMethodNotAllowed());
     }
 
-    //TODO : checker le resultat
     @Test
     public void postBookPostMethod() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
@@ -188,92 +188,77 @@ class BookRestControllerTest {
                 .andExpect(status().isOk());
     }
 
-    //TODO : checker le resultat
     @Test
     public void postBookDeleteMethod() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         String jsonContent = mapper.writeValueAsString(bookToPost);
-        when(bookService.saveBook(bookToPost)).thenReturn(bookToPost);
         mvc.perform(delete("/api/postBook")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonContent))
                 .andExpect(status().isMethodNotAllowed());
     }
 
-    //TODO : checker le resultat
     @Test
     public void deleteBookGetMethod() throws Exception {
-        doNothing().when(bookService).deleteBook(1L);
         mvc.perform(get("/api/deleteBook/1"))
                 .andExpect(status().isMethodNotAllowed());
     }
 
-    //TODO : checker le resultat
     @Test
     public void deleteBookPutMethod() throws Exception {
-        doNothing().when(bookService).deleteBook(1L);
         mvc.perform(put("/api/deleteBook/1"))
                 .andExpect(status().isMethodNotAllowed());
     }
 
-    //TODO : checker le resultat
     @Test
     public void deleteBookPostMethod() throws Exception {
-        doNothing().when(bookService).deleteBook(1L);
         mvc.perform(post("/api/deleteBook/1"))
                 .andExpect(status().isMethodNotAllowed());
     }
 
-    //TODO : checker le resultat
     @Test
     public void deleteBookDeleteMethod() throws Exception {
         doNothing().when(bookService).deleteBook(1L);
         mvc.perform(delete("/api/deleteBook/1"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+        ;
     }
 
-    //TODO : checker le resultat
     @Test
     public void updateBookGetMethod() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         String jsonContent = mapper.writeValueAsString(bookToPut);
-        when(bookService.updateBook(bookToPut,1L)).thenReturn(bookToPut);
         mvc.perform(get("/api/updateBook/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonContent))
                 .andExpect(status().isMethodNotAllowed());
     }
 
-    //TODO : checker le resultat
     @Test
     public void updateBookPutMethod() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         String jsonContent = mapper.writeValueAsString(bookToPut);
-        when(bookService.updateBook(bookToPut,1L)).thenReturn(bookToPut);
-        mvc.perform(put("/api/updateBook/1")
+        when(bookService.updateBook(bookToPut,0L)).thenReturn(bookToPut);
+        mvc.perform(put("/api/updateBook/0")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonContent))
                 .andExpect(status().isOk());
     }
 
-    //TODO : checker le resultat
     @Test
     public void updateBookPostMethod() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         String jsonContent = mapper.writeValueAsString(bookToPut);
-        when(bookService.updateBook(bookToPut,1L)).thenReturn(bookToPut);
         mvc.perform(post("/api/updateBook/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonContent))
                 .andExpect(status().isMethodNotAllowed());
     }
 
-    //TODO : checker le resultat
     @Test
     public void updateBookDeleteMethod() throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         String jsonContent = mapper.writeValueAsString(bookToPut);
-        when(bookService.updateBook(bookToPut,1L)).thenReturn(bookToPut);
         mvc.perform(delete("/api/updateBook/1")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonContent))

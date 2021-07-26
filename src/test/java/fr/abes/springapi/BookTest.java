@@ -56,9 +56,10 @@ class BookTest {
     @Test
     void testGetId(){ // un truc que je n'ai pas compris dans spring
         Long id = bookGet.getId();
-        assertEquals(1,id);
+        assertNull(id);
     }
 
+    // -------------- Setter ----------------
     @Test
     void testSetAuthor() {
         bookGet.setAuthor("toto");
