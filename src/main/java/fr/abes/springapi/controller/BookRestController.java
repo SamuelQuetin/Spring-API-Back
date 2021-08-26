@@ -32,6 +32,12 @@ public class BookRestController {
         return dtoMapper.map(book, BookDto.class);
     }
 
+    @GetMapping("/api/getBooksByKeyword/{keyword}")
+    public List<BookDto> getBooksByKeyword(@PathVariable String keyword){
+        List<Book> books= bookService.getBookListByKeyword(keyword);
+        return dtoMapper.mapList(books, BookDto.class);
+    }
+
     @PostMapping("/api/postBook")
     public BookDto saveBook(@RequestBody BookDto bookDto){
         Book book = dtoMapper.map(bookDto, Book.class);
